@@ -1,0 +1,28 @@
+services:
+  loja-viva-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - loja-viva-db
+
+  loja-viva-db:
+    image: mysql:8.0
+    container_name: loja-viva-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: LojaVivaDB
+      MYSQL_USER: lojaviva_user
+      MYSQL_PASSWORD: lojaviva123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

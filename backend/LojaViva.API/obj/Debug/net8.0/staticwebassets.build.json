@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "kWYo0JPs3FYn2hgvf9R2g8rmxg4MZf+qLoNb4YlDhOs=",
+  "Source": "LojaViva.API",
+  "BasePath": "_content/LojaViva.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

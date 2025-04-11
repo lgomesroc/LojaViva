@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{7E19E9CF-64C0-4569-BC82-B613760828D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaViva.API", "backend\LojaViva.API\LojaViva.API.csproj", "{3D9CE743-E3A8-407E-8266-BCF8F1198728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaViva.Tests", "backend\LojaViva.Tests\LojaViva.Tests.csproj", "{6D4DE8C2-E1C6-4030-997B-EFD418521EC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D9CE743-E3A8-407E-8266-BCF8F1198728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9CE743-E3A8-407E-8266-BCF8F1198728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9CE743-E3A8-407E-8266-BCF8F1198728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9CE743-E3A8-407E-8266-BCF8F1198728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4DE8C2-E1C6-4030-997B-EFD418521EC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4DE8C2-E1C6-4030-997B-EFD418521EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4DE8C2-E1C6-4030-997B-EFD418521EC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4DE8C2-E1C6-4030-997B-EFD418521EC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3D9CE743-E3A8-407E-8266-BCF8F1198728} = {7E19E9CF-64C0-4569-BC82-B613760828D6}
+		{6D4DE8C2-E1C6-4030-997B-EFD418521EC4} = {7E19E9CF-64C0-4569-BC82-B613760828D6}
+	EndGlobalSection
+EndGlobal
