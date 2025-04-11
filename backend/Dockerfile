@@ -16,13 +16,28 @@ RUN dotnet restore
 WORKDIR /src/LojaViva.Tests
 RUN dotnet restore
 
+# Instalar os pacotes necessários ao projeto LojaViva.API
+WORKDIR /src/LojaViva
+RUN dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 8.0.14
+RUN dotnet add package Microsoft.AspNetCore.Authorization --version 8.0.14
+RUN dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 8.0.14
+RUN dotnet add package Microsoft.AspNetCore.OpenApi --version 8.0.14
+RUN dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.14
+RUN dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.14
+RUN dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.14
+RUN dotnet add package Microsoft.Extensions.Logging.Console --version 8.0.1
+RUN dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.0
+RUN dotnet add package Swashbuckle.AspNetCore --version 6.6.2
+RUN dotnet add package System.IdentityModel.Tokens.Jwt --version 8.8.0
+RUN dotnet add package Microsoft.Extensions.Caching.Memory --version 8.0.1
+
 # Copiar todo o código do projeto API para o contêiner
 COPY LojaViva.API /src/LojaViva/
 
 # Copiar todo o código do projeto de testes para o contêiner
 COPY LojaViva.Tests /src/LojaViva.Tests/
 
-# Adicionar os pacotes necessários ao projeto de testes
+# Adicionar os pacotes necessários ao projeto de testes LojaViva.Tests
 WORKDIR /src/LojaViva.Tests
 RUN dotnet add package xunit
 RUN dotnet add package xunit.runner.visualstudio

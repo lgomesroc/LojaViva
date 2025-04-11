@@ -125,3 +125,7 @@
 /mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
 /mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Binder.dll
+/mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.Configuration.dll
+/mnt/d/Projects/LojaViva/backend/LojaViva.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.Console.dll
+/mnt/d/Projects/LojaViva/backend/LojaViva.API/obj/Debug/net8.0/LojaViva.API.sourcelink.json

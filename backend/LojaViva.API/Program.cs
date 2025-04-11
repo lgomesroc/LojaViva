@@ -7,6 +7,10 @@ using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar logging no console
+builder.Logging.ClearProviders(); // Limpa provedores padrão de logging
+builder.Logging.AddConsole(); // Adiciona logging no console
+
 // Configurar serviços e autenticação
 builder.Services.ConfigureServices(builder.Configuration)
                 .ConfigureJwtAuthentication(builder.Configuration);
