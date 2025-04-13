@@ -4,17 +4,23 @@ using Moq;
 using LojaViva.API.Controllers;
 using LojaViva.API.Repositories;
 using LojaViva.API.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 
 public class ClienteControllerTests
 {
     private readonly ClientesController _controller;
     private readonly Mock<IClienteRepository> _mockRepository;
+    private readonly Mock<ILogger<ClientesController>> _mockLogger;
+    private readonly Mock<IMemoryCache> _mockCache;
 
     public ClienteControllerTests()
     {
-        // Criar um mock do repositório para simular comportamento
+        // Criar mocks
         _mockRepository = new Mock<IClienteRepository>();
+        _mockLogger = new Mock<ILogger<ClientesController>>();
+        _mockCache = new Mock<IMemoryCache>();
 
         // Configurar os métodos simulados do repositório
         _mockRepository.Setup(repo => repo.GetAll()).Returns(new List<Cliente>
@@ -23,8 +29,12 @@ public class ClienteControllerTests
             new Cliente { Id = 2, Nome = "Cliente B", Email = "clienteB@email.com", Telefone = "987654321" },
         });
 
-        // Injetar o mock no controlador
-        _controller = new ClientesController(_mockRepository.Object);
+        // Configurar o mock de cache
+        object cacheEntry;
+        _mockCache.Setup(c => c.TryGetValue(It.IsAny<object>(), out cacheEntry)).Returns(false);
+
+        // Injetar os mocks no controlador
+        _controller = new ClientesController(_mockRepository.Object, _mockLogger.Object, _mockCache.Object);
     }
 
     [Fact]

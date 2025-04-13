@@ -460,3 +460,5 @@
 /mnt/d/Projects/LojaViva/backend/LojaViva.Tests/bin/Debug/net8.0/refs/Microsoft.Extensions.Options.dll
 /mnt/d/Projects/LojaViva/backend/LojaViva.Tests/bin/Debug/net8.0/refs/Microsoft.Extensions.Primitives.dll
 /mnt/d/Projects/LojaViva/backend/LojaViva.Tests/bin/Debug/net8.0/refs/System.Diagnostics.DiagnosticSource.dll
+/mnt/d/Projects/LojaViva/backend/LojaViva.Tests/obj/Debug/net8.0/LojaViva.Tests.sourcelink.json
+/mnt/d/Projects/LojaViva/backend/LojaViva.Tests/bin/Debug/net8.0/Bogus.dll

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "+rcrB4GFAe4=",
+  "dgSpecHash": "LUOUDeBBjV0=",
   "success": true,
   "projectFilePath": "/mnt/d/Projects/LojaViva/backend/LojaViva.Tests/LojaViva.Tests.csproj",
   "expectedPackageFiles": [
+    "/home/lgomesroc/.nuget/packages/bogus/35.6.2/bogus.35.6.2.nupkg.sha512",
     "/home/lgomesroc/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",
     "/home/lgomesroc/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/home/lgomesroc/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.14/microsoft.aspnetcore.authentication.jwtbearer.8.0.14.nupkg.sha512",

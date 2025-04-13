@@ -3,7 +3,6 @@
 Este é o repositório do projeto LojaViva, uma aplicação de loja virtual desenvolvida com .NET 8 e MySQL.
 
 ## Estrutura do Projeto
-
 ```
 .
 ├── LojaViva.sln
@@ -29,30 +28,31 @@ Este é o repositório do projeto LojaViva, uma aplicação de loja virtual dese
 
 ## Tecnologias escolhidas
 ### Backend
-1. Tecnologias Utilizadas
+1. Tecnologias utilizadas
 - .NET 8
 - MySQL
 
 2. Pacotes instalados
-- **Microsoft.AspNetCore.Authentication.JwtBearer**: Gerencia autenticação baseada em tokens JWT.
-- **Microsoft.AspNetCore.Authorization**: Fornece controle de acesso baseado em políticas.
-- **Microsoft.AspNetCore.Identity.EntityFrameworkCore**: Implementação do Identity com suporte a Entity Framework Core.
-- **Microsoft.AspNetCore.OpenApi**: Gera documentação OpenAPI/Swagger para APIs ASP.NET Core.
-- **Microsoft.EntityFrameworkCore.Design**: Suporte para ferramentas de design (ex.: scaffolding) do EF Core.
-- **Microsoft.EntityFrameworkCore.Relational**: Adiciona funcionalidades relacionais ao EF Core (ex.: SQL).
-- **Microsoft.EntityFrameworkCore.Tools**: Ferramentas CLI para gerenciar EF Core (migrations, scaffolding).
-- **Microsoft.Extensions.Logging.Console**: Exibe logs no console.
-- **Pomelo.EntityFrameworkCore.MySql**: Implementação do EF Core para bancos MySQL.
-- **Swashbuckle.AspNetCore**: Integração do Swagger para ASP.NET Core.
-- **System.IdentityModel.Tokens.Jwt**: Manipula tokens JWT para autenticação.
-- **Microsoft.Extensions.Caching.Memory**: Gerencia cache em memória.
+- **Microsoft.AspNetCore.Authentication.JwtBearer**: gerencia autenticação baseada em tokens JWT.
+- **Microsoft.AspNetCore.Authorization**: fornece controle de acesso baseado em políticas.
+- **Microsoft.AspNetCore.Identity.EntityFrameworkCore**: implementação do Identity com suporte a Entity Framework Core.
+- **Microsoft.AspNetCore.OpenApi**: gera documentação OpenAPI/Swagger para APIs ASP.NET Core.
+- **Microsoft.EntityFrameworkCore.Design**: suporte para ferramentas de design (ex.: scaffolding) do EF Core.
+- **Microsoft.EntityFrameworkCore.Relational**: adiciona funcionalidades relacionais ao EF Core (ex.: SQL).
+- **Microsoft.EntityFrameworkCore.Tools**: ferramentas CLI para gerenciar EF Core (migrations, scaffolding).
+- **Microsoft.Extensions.Logging.Console**: exibe logs no console.
+- **Pomelo.EntityFrameworkCore.MySql**: implementação do EF Core para bancos MySQL.
+- **Swashbuckle.AspNetCore**: integração do Swagger para ASP.NET Core.
+- **System.IdentityModel.Tokens.Jwt**: manipula tokens JWT para autenticação.
+- **Microsoft.Extensions.Caching.Memory**: gerencia cache em memória.
 - **xunit**: framework para testes unitários em .NET.
 - **xunit.runner.visualstudio**: executa testes xUnit no Visual Studio.
 - **Moq**: Mocking de objetos para testes.
 - **Moq.EntityFrameworkCore**: Mocking de contexto EF Core em testes.
-- **Microsoft.EntityFrameworkCore.InMemory**: Banco de dados em memória para testes do EF Core.
-- **Microsoft.AspNetCore.Mvc.Testing**: Facilita testes de integração em ASP.NET Core.
-- **coverlet.collector**: Gera relatórios de cobertura de código para testes.
+- **Microsoft.EntityFrameworkCore.InMemory**: banco de dados em memória para testes do EF Core.
+- **Microsoft.AspNetCore.Mvc.Testing**: facilita testes de integração em ASP.NET Core.
+- **coverlet.collector**: gera relatórios de cobertura de código para testes.
+- **Bogus**: gera dados aleatórios como usuários, pedidos ou produtos para testes e desenvolvimento.
 
 ### Frontend
 Ainda não implementado.
@@ -63,7 +63,7 @@ Ainda não implementado.
 O arquivo Dockerfile para o backend está localizado em `./backend/Dockerfile`.
 
 ### Docker Compose
-O arquivo `docker-compose.yml` na raiz do projeto.
+O arquivo **docker-compose.yml** na raiz do projeto.
 
 ## Comandos Úteis
 
@@ -91,16 +91,16 @@ dotnet ef database update
 
 ## Problemas Conhecidos e Soluções
 ### Erro: "backend/LojaViva.API not found"
-**Problema:** Quando os caminhos no Dockerfile incluem o prefixo `./backend/` enquanto o contexto de build já está definido como `./backend` no docker-compose.yml.
-**Solução:** Remover o prefixo `./backend/` nos comandos COPY do Dockerfile.
+**Problema:** quando os caminhos no Dockerfile incluem o prefixo `./backend/` enquanto o contexto de build já está definido como `./backend` no docker-compose.yml.
+**Solução:** remover o prefixo `./backend/` nos comandos COPY do Dockerfile.
 
 ### Erro: "dotnet-ef does not exist"
-**Problema:** A ferramenta Entity Framework Core CLI não está disponível no contêiner em execução.
-**Solução:** Instalar o `dotnet-ef` na imagem final do Dockerfile e garantir que esteja no PATH.
+**Problema:** a ferramenta Entity Framework Core CLI não está disponível no contêiner em execução.
+**Solução:** instalar o `dotnet-ef` na imagem final do Dockerfile e garantir que esteja no PATH.
 
 ### Erro: "can't cd to /src/LojaViva"
-**Problema:** O diretório de código-fonte não existe na imagem final do contêiner.
-**Solução:** Adicionar um comando COPY no Dockerfile para copiar o código-fonte para a imagem final:
+**Problema:** o diretório de código-fonte não existe na imagem final do contêiner.
+**Solução:** adicionar um comando COPY no Dockerfile para copiar o código-fonte para a imagem final:
 ```
 COPY --from=build /src/LojaViva ./src
 ```
@@ -220,11 +220,11 @@ Ajustado o método Register no AuthController para validar corretamente os dados
 
 Adicionamos a configuração UseDeveloperExceptionPage para facilitar a depuração de erros durante o desenvolvimento.
 
-10. Separação de Arquivos
+10. Separação de arquivos
 Extraímos a classe UserDto para um arquivo separado (UserDto.cs) na pasta Models, seguindo boas práticas de organização do projeto.
 
 11. Testes Passaram
-Finalizamos a implementação dos testes, garantindo que todos os casos de teste no projeto fossem bem-sucedidos.
+Finalizado a implementação dos testes, garantindo que todos os casos de teste no projeto fossem bem-sucedidos.
 
 12. Repository Pattern
 Introduzido o padrão de repositório para separar a lógica de acesso a dados e melhorar a organização.
@@ -257,8 +257,8 @@ Refatoramos o ProdutoController para usar IProdutoRepository em vez de acessar d
 14. Implementação do Repository Pattern para Cliente e Pedido
 - Cliente:
   - Criamos os arquivos:
-    - `IClienteRepository.cs`: Interface que define as operações do repositório.
-    - `ClienteRepository.cs`: Implementação do repositório que encapsula a lógica de manipulação de clientes no banco de dados.
+    - **IClienteRepository.cs**: Interface que define as operações do repositório.
+    - **ClienteRepository.cs**: Implementação do repositório que encapsula a lógica de manipulação de clientes no banco de dados.
   - Atualizamos o `ClientesController` para utilizar o `IClienteRepository` em vez de acessar diretamente o `ApplicationDbContext`.
 - Pedido:
   - Criamos os arquivos:
@@ -273,11 +273,11 @@ ServiceExtensions.cs:
 
 Configuração de serviços, incluindo DbContext, Identity, e repositórios.
 
-AuthenticationExtensions.cs:
+**AuthenticationExtensions.cs**:
 
-Configuração da autenticação JWT.
+Configuração da autenticação **JWT**.
 
-Atualizamos o Program.cs para ficar mais limpo e modular, delegando responsabilidades aos métodos de extensão.
+Atualizamos o **Program.cs** para ficar mais limpo e modular, delegando responsabilidades aos métodos de extensão.
 
 Seguindo boas práticas de arquitetura com:
 
@@ -315,6 +315,20 @@ _logger.LogWarning($"Cliente com ID {id} não encontrado");
 - Configuração de `MemoryCacheEntryOptions`:
   - Expiração absoluta de 5 a 10 minutos dependendo do tipo de dado.
   - Expiração renovável para acessos recentes.
+
+18. Geração de dados fictícios para testes
+- Instalado o pacote **Bogus** no projeto de testes (**LojaViva.Tests**).
+- Criado geradores de dados fictícios (fakers) para as entidades:
+  - Cliente:
+    - Gerador criado no arquivo **ClienteFaker.cs**, que simula dados como nome, e-mail, e telefone.
+  - Pedido:
+    - Gerador criado no arquivo **PedidoFaker.cs**, simulando dados como cliente associado, total e data.
+  - Produto:
+    - Gerador criado no arquivo **ProdutoFaker.cs**, que cria dados fictícios como nome, preço e estoque.
+- Desenvolvido testes unitários para validar os fakers:
+  - **ClienteTests.cs**: Teste para validar a geração de clientes fictícios.
+  - **PedidoTests.cs**: Teste para validar a geração de pedidos fictícios.
+  - **ProdutoTests.cs**: Teste para validar a geração de produtos fictícios.
 
 
 ### Frontend

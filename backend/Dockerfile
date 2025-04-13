@@ -30,6 +30,7 @@ RUN dotnet add package Pomelo.EntityFrameworkCore.MySql --version 8.0.0
 RUN dotnet add package Swashbuckle.AspNetCore --version 6.6.2
 RUN dotnet add package System.IdentityModel.Tokens.Jwt --version 8.8.0
 RUN dotnet add package Microsoft.Extensions.Caching.Memory --version 8.0.1
+RUN dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson --version 8.0.15
 
 # Copiar todo o código do projeto API para o contêiner
 COPY LojaViva.API /src/LojaViva/
@@ -46,6 +47,7 @@ RUN dotnet add package Moq.EntityFrameworkCore --version 8.0.1.7
 RUN dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 8.0.15
 RUN dotnet add package Microsoft.AspNetCore.Mvc.Testing --version 8.0.15
 RUN dotnet add package coverlet.collector
+RUN dotnet add package Bogus
 
 # Adicionar referência ao projeto principal no projeto de testes
 RUN dotnet add LojaViva.Tests.csproj reference /src/LojaViva/LojaViva.API.csproj

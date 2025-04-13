@@ -1,0 +1,39 @@
+# Não ignore package.json e package-lock.json
+!package.json
+!package-lock.json
+
+# Ignorar dependências locais
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar arquivos de configuração locais
+.env
+*.env.*
+
+# Ignorar arquivos de build
+build/
+dist/
+
+# Ignorar arquivos gerados pelo sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar IDEs e editores
+.vscode/
+.idea/
+*.swp
+*.sublime-workspace
+
+# Ignorar controle de versão
+.git
+.gitignore
+
+# Ignorar caches e temporários
+temp/
+logs/
+
+# Ignorar arquivos de documentação
+README.md
+*.md

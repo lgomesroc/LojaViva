@@ -26,8 +26,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Adicionar suporte a controladores
-builder.Services.AddControllers();
+// Adicionar suporte a controladores e Newtonsoft.Json para serialização
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+    });
 
 var app = builder.Build();
 

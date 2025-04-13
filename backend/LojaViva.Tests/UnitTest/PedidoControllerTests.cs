@@ -4,6 +4,8 @@ using Moq;
 using LojaViva.API.Controllers;
 using LojaViva.API.Repositories;
 using LojaViva.API.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System;
 
@@ -11,11 +13,15 @@ public class PedidoControllerTests
 {
     private readonly PedidoController _controller;
     private readonly Mock<IPedidoRepository> _mockRepository;
+    private readonly Mock<ILogger<PedidoController>> _mockLogger;
+    private readonly Mock<IMemoryCache> _mockCache;
 
     public PedidoControllerTests()
     {
-        // Criar mock do repositório
+        // Criar mocks
         _mockRepository = new Mock<IPedidoRepository>();
+        _mockLogger = new Mock<ILogger<PedidoController>>();
+        _mockCache = new Mock<IMemoryCache>();
 
         // Configurar mock com dados de teste
         _mockRepository.Setup(repo => repo.GetAll()).Returns(new List<Pedido>
@@ -24,7 +30,12 @@ public class PedidoControllerTests
             new Pedido { Id = 2, ClienteId = 2, Data = DateTime.Now.AddDays(-1), Total = 200.00m }
         });
 
-        _controller = new PedidoController(_mockRepository.Object);
+        // Configurar o mock de cache
+        object cacheEntry;
+        _mockCache.Setup(c => c.TryGetValue(It.IsAny<object>(), out cacheEntry)).Returns(false);
+
+        // Injetar os mocks no controlador
+        _controller = new PedidoController(_mockRepository.Object, _mockLogger.Object, _mockCache.Object);
     }
 
     [Fact]
