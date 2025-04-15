@@ -1,5 +1,6 @@
 using LojaViva.API.Data;
 using LojaViva.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaViva.API.Repositories
 {
@@ -15,6 +16,11 @@ namespace LojaViva.API.Repositories
         public IEnumerable<Cliente> GetAll() => _context.Clientes.ToList();
 
         public Cliente? GetById(int id) => _context.Clientes.Find(id);
+
+        public Cliente? GetByEmail(string email)
+        {
+            return _context.Clientes.FirstOrDefault(c => c.Email == email);
+        }
 
         public void Add(Cliente cliente)
         {
@@ -36,6 +42,13 @@ namespace LojaViva.API.Repositories
                 _context.Clientes.Remove(cliente);
                 _context.SaveChanges();
             }
+        }
+
+        public bool ValidateCredentials(string email, string senha)
+        {
+            var cliente = GetByEmail(email);
+            // Verifica se o cliente existe e se a senha corresponde
+            return cliente != null && cliente.Senha == senha;
         }
     }
 }

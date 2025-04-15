@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TextField, Button, Box, Typography, Link, CircularProgress } from '@mui/material';
+import { TextField, Button, Box, Typography, Link, CircularProgress, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDependency } from '../../contexts/DependencyProvider';
 
 const RegisterPage = () => {
   const { authService } = useDependency();
   const navigate = useNavigate();
-  const [loading, setLoading] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Controle de visibilidade da senha
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Controle de visibilidade da confirmação
+
   const {
     register,
     handleSubmit,
@@ -19,6 +22,9 @@ const RegisterPage = () => {
 
   const password = React.useRef({});
   password.current = watch("password", "");
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword); // Alternar visibilidade da senha
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword); // Alternar visibilidade da confirmação
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -84,34 +90,60 @@ const RegisterPage = () => {
           helperText={errors.email?.message}
           disabled={loading}
         />
-        <TextField
-          label="Senha"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register('password', { 
-            required: 'A senha é obrigatória',
-            minLength: { value: 6, message: 'A senha deve ter pelo menos 6 caracteres' }
-          })}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-          disabled={loading}
-        />
-        <TextField
-          label="Confirmação de Senha"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register('confirmPassword', { 
-            required: 'Confirme sua senha',
-            validate: value => value === password.current || "As senhas não coincidem"
-          })}
-          error={!!errors.confirmPassword}
-          helperText={errors.confirmPassword?.message}
-          disabled={loading}
-        />
+        <Box sx={{ position: 'relative' }}>
+          <TextField
+            label="Senha"
+            type={showPassword ? 'text' : 'password'} // Alterna entre texto e senha
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            {...register('password', { 
+              required: 'A senha é obrigatória',
+              minLength: { value: 6, message: 'A senha deve ter pelo menos 6 caracteres' }
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            disabled={loading}
+          />
+          <IconButton
+            onClick={togglePasswordVisibility}
+            sx={{
+              position: 'absolute',
+              right: 10,
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >
+            {showPassword ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
+        </Box>
+        <Box sx={{ position: 'relative' }}>
+          <TextField
+            label="Confirmação de Senha"
+            type={showConfirmPassword ? 'text' : 'password'} // Alterna entre texto e senha
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            {...register('confirmPassword', { 
+              required: 'Confirme sua senha',
+              validate: value => value === password.current || "As senhas não coincidem"
+            })}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
+            disabled={loading}
+          />
+          <IconButton
+            onClick={toggleConfirmPasswordVisibility}
+            sx={{
+              position: 'absolute',
+              right: 10,
+              top: '50%',
+              transform: 'translateY(-50%)',
+            }}
+          >
+            {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+          </IconButton>
+        </Box>
         <Button 
           type="submit" 
           variant="contained" 

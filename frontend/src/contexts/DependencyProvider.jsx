@@ -10,6 +10,8 @@ export const DependencyProvider = ({ children }) => {
   const userService = new UserService();
   const orderService = new OrderService();
 
+  console.log('Dependências no Provider:', { authService, userService, orderService }); // Teste
+
   return (
     <DependencyContext.Provider value={{ authService, userService, orderService }}>
       {children}

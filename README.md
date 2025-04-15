@@ -31,6 +31,7 @@ Este é o repositório do projeto LojaViva, uma aplicação de loja virtual dese
 1. Tecnologias utilizadas
 - .NET 8
 - MySQL
+- React
 
 2. Pacotes instalados
 - **Microsoft.AspNetCore.Authentication.JwtBearer**: gerencia autenticação baseada em tokens JWT.
@@ -55,7 +56,22 @@ Este é o repositório do projeto LojaViva, uma aplicação de loja virtual dese
 - **Bogus**: gera dados aleatórios como usuários, pedidos ou produtos para testes e desenvolvimento.
 
 ### Frontend
-Ainda não implementado.
+- **@emotion/react**: estilização dinâmica de componentes React.
+- **@emotion/styled**: criação de componentes estilizados reutilizáveis.
+- **@mui/material**: biblioteca de componentes prontos para criar interfaces atrativas e responsivas.
+- **@testing-library/dom**: testar interações diretamente no DOM.
+- **@testing-library/react**: testar componentes React simulando comportamentos reais.
+- **@testing-library/jest-dom**: adicionar matchers extras para realizar testes em componentes React.
+- **@testing-library/user-event**: simular eventos de usuário, como cliques e digitação, para testes.
+- **axios**: fazer requisições HTTP ao backend de forma simples.
+- **dotenv**: gerenciar variáveis de ambiente a partir de arquivos .env.
+- **react**: criar interfaces de usuário interativas.
+- **react-dom**: renderizar componentes React no navegador.
+- **react-hook-form**: gerenciar e validar formulários de forma eficiente.
+- **react-query**: gerenciar estados assíncronos e otimizar requisições ao backend.
+- **react-router-dom**: gerenciar navegação entre páginas.
+- **react-scripts**: scripts para desenvolvimento, build e testes no React.
+- **web-vitals**: monitorar e medir métricas de performance do frontend.
 
 ## Configuração do Docker
 
@@ -66,7 +82,6 @@ O arquivo Dockerfile para o backend está localizado em `./backend/Dockerfile`.
 O arquivo **docker-compose.yml** na raiz do projeto.
 
 ## Comandos Úteis
-
 ### Construir e Iniciar os Contêineres
 ```
 docker-compose up --build
@@ -91,16 +106,16 @@ dotnet ef database update
 
 ## Problemas Conhecidos e Soluções
 ### Erro: "backend/LojaViva.API not found"
-**Problema:** quando os caminhos no Dockerfile incluem o prefixo `./backend/` enquanto o contexto de build já está definido como `./backend` no docker-compose.yml.
-**Solução:** remover o prefixo `./backend/` nos comandos COPY do Dockerfile.
+- **Problema:** quando os caminhos no Dockerfile incluem o prefixo `./backend/` enquanto o contexto de build já está definido como `./backend` no docker-compose.yml.
+- **Solução:** remover o prefixo `./backend/` nos comandos COPY do Dockerfile.
 
 ### Erro: "dotnet-ef does not exist"
-**Problema:** a ferramenta Entity Framework Core CLI não está disponível no contêiner em execução.
-**Solução:** instalar o `dotnet-ef` na imagem final do Dockerfile e garantir que esteja no PATH.
+- **Problema:** a ferramenta Entity Framework Core CLI não está disponível no contêiner em execução.
+- **Solução:** instalar o `dotnet-ef` na imagem final do Dockerfile e garantir que esteja no PATH.
 
 ### Erro: "can't cd to /src/LojaViva"
-**Problema:** o diretório de código-fonte não existe na imagem final do contêiner.
-**Solução:** adicionar um comando COPY no Dockerfile para copiar o código-fonte para a imagem final:
+- **Problema:** o diretório de código-fonte não existe na imagem final do contêiner.
+- **Solução:** adicionar um comando COPY no Dockerfile para copiar o código-fonte para a imagem final:
 ```
 COPY --from=build /src/LojaViva ./src
 ```
@@ -177,19 +192,19 @@ Done.
 
 6. Testes
 - Garantimos que os endpoints estavam funcionando via **Swagger** e **Postman**.
-  - Validei o banco de dados com consultas diretas ao MySQL.
+  - Validei o banco de dados com consultas diretas ao **MySQL**.
 - Teste e Sucesso no Endpoint de Clientes:
   - Validei o funcionamento correto do endpoint de Clientes, incluindo operações como criação, atualização e exclusão de registros no **Swagger**.
 - Configuração de Autenticação e Segurança:
   - Implementei **ASP.NET Core Identity** para gerenciar usuários e senhas.
   - Adicionei suporte a autenticação com **JWT** para proteger os endpoints.
-  - Configurado os serviços no `Program.cs` e ajustamos o appsettings.json para suportar as chaves JWT.
+  - Configurado os serviços no **Program.cs** e ajustamos o appsettings.json para suportar as chaves JWT.
 - Criação de Controladores (Controller):
   - Adicionado controladores específicos para as entidades Produto e Pedido. Implementado endpoints básicos para operações como listar, criar, atualizar e excluir registros.
 - Correções e Melhorias:
   - Resolvido os erros de versão e conflitos entre pacotes do .NET 8 durante a configuração de dependências.
   - Adicionaso o método `EnableRetryOnFailure()` para lidar com falhas transitórias ao conectar ao **MySQL**.
-  - Revisão e atualização do `Program.cs` para que ele inclua todas as funcionalidades necessárias, como autenticação, autorização, e documentação **Swagger**.
+  - Revisão e atualização do **Program.cs** para que ele inclua todas as funcionalidades necessárias, como autenticação, autorização, e documentação **Swagger**.
 - Resolução de Problemas de Conexão:
   - Lidei com problemas relacionados à porta do servidor (5000) já estar em uso, configurando uma nova porta (5001).
   - Garanti que a string de conexão com o banco **MySQL** estivesse correta e o banco estivesse acessível.
@@ -214,77 +229,62 @@ Done.
   - Configurado um banco de dados `InMemory` para os testes, garantindo que o ambiente fosse isolado.
 
 9. Correção de Erros
-Resolvido problemas relacionados à incompatibilidade de versões de pacotes (como **Microsoft.EntityFrameworkCore.InMemory** e **Moq.EntityFrameworkCore**).
-
-Ajustado o método Register no AuthController para validar corretamente os dados enviados.
-
-Adicionamos a configuração UseDeveloperExceptionPage para facilitar a depuração de erros durante o desenvolvimento.
+- Resolvido problemas relacionados à incompatibilidade de versões de pacotes (como **Microsoft.EntityFrameworkCore.InMemory** e **Moq.EntityFrameworkCore**).
+- Ajustado o método Register no AuthController para validar corretamente os dados enviados.
+- Adicionado a configuração UseDeveloperExceptionPage para facilitar a depuração de erros durante o desenvolvimento.
 
 10. Separação de arquivos
-Extraímos a classe UserDto para um arquivo separado (UserDto.cs) na pasta Models, seguindo boas práticas de organização do projeto.
+- Extraído a classe UserDto para um arquivo separado (UserDto.cs) na pasta Models, seguindo boas práticas de organização do projeto.
 
 11. Testes Passaram
-Finalizado a implementação dos testes, garantindo que todos os casos de teste no projeto fossem bem-sucedidos.
+- Finalizado a implementação dos testes, garantindo que todos os casos de teste no projeto fossem bem-sucedidos.
 
 12. Repository Pattern
-Introduzido o padrão de repositório para separar a lógica de acesso a dados e melhorar a organização.
-
-Arquivos criados:
-
-Repositories/IProdutoRepository.cs — Define a interface para operações de Produto.
-
-Repositories/ProdutoRepository.cs — Implementa a interface e encapsula o acesso ao banco de dados.
-
-Modificações no ProdutoController:
-
-Refatoramos o ProdutoController para usar IProdutoRepository em vez de acessar diretamente o ApplicationDbContext.
+- Introduzido o padrão de repositório para separar a lógica de acesso a dados e melhorar a organização.
+- Arquivos criados:
+  - **Repositories/IProdutoRepository.cs** — Define a interface para operações de Produto.
+  - **Repositories/ProdutoRepository.cs** — Implementa a interface e encapsula o acesso ao banco de dados.
+- Modificações no `ProdutoController`:
+  - Refatoramos o ProdutoController para usar IProdutoRepository em vez de acessar diretamente o `ApplicationDbContext´.
 
 13. Testes para Cliente e Pedido
 - Desenvolveido testes unitários para os controladores ClientesController e PedidoController, garantindo a validação do comportamento esperado para os endpoints.
   - Cenários Testados:
-
-    - ClientesController:
-      - GetClientes: Retorna a lista de clientes com 200 OK.
-      - GetCliente: Retorna um cliente específico ou 404 Not Found para IDs inexistentes.
-      - PostCliente: Adiciona um novo cliente e retorna 201 Created.
-      - DeleteCliente: Exclui um cliente existente com sucesso ou retorna 404 Not Found quando o cliente não existe.
-    - PedidoController:
-      - GetPedidos: Retorna a lista de pedidos com 200 OK.
-      - GetPedido: Retorna um pedido específico ou 404 Not Found para IDs inexistentes.
-      - AddPedido: Adiciona um novo pedido e retorna 201 Created.
-      - DeletePedido: Exclui um pedido existente com sucesso ou retorna 404 Not Found quando o pedido não existe.
+    - `ClientesController`:
+      - `GetClientes`: retorna a lista de clientes com 200 OK.
+      - `GetCliente`: retorna um cliente específico ou 404 Not Found para IDs inexistentes.
+      - `PostCliente`: adiciona um novo cliente e retorna 201 Created.
+      - `DeleteCliente`: exclui um cliente existente com sucesso ou retorna 404 Not Found quando o cliente não existe.
+    - `PedidoController`:
+      - `GetPedidos`: retorna a lista de pedidos com 200 OK.
+      - `GetPedido`: retorna um pedido específico ou 404 Not Found para IDs inexistentes.
+      - `AddPedido`: adiciona um novo pedido e retorna 201 Created.
+      - `DeletePedido`: exclui um pedido existente com sucesso ou retorna 404 Not Found quando o pedido não existe.
 
 14. Implementação do Repository Pattern para Cliente e Pedido
 - Cliente:
   - Criamos os arquivos:
-    - **IClienteRepository.cs**: Interface que define as operações do repositório.
-    - **ClienteRepository.cs**: Implementação do repositório que encapsula a lógica de manipulação de clientes no banco de dados.
+    - **IClienteRepository.cs**: interface que define as operações do repositório.
+    - **ClienteRepository.cs**: implementação do repositório que encapsula a lógica de manipulação de clientes no banco de dados.
   - Atualizamos o `ClientesController` para utilizar o `IClienteRepository` em vez de acessar diretamente o `ApplicationDbContext`.
 - Pedido:
   - Criamos os arquivos:
-    - `IPedidoRepository.cs`: Interface que define as operações do repositório.
-    - `PedidoRepository.cs`: Implementação do repositório que encapsula a lógica de manipulação de pedidos, incluindo o relacionamento com a entidade Cliente.
+    - `IPedidoRepository.cs`: interface que define as operações do repositório.
+    - `PedidoRepository.cs`: implementação do repositório que encapsula a lógica de manipulação de pedidos, incluindo o relacionamento com a entidade Cliente.
   - Atualizamos o `PedidoController` para utilizar o `IPedidoRepository` em vez de acessar diretamente o `ApplicationDbContext`.
 
 15. Refatoração do Program.cs
-Dividimos o código do Program.cs em métodos de extensão para melhorar a organização e aderir ao princípio de responsabilidade única (SRP):
-
-ServiceExtensions.cs:
-
-Configuração de serviços, incluindo DbContext, Identity, e repositórios.
-
-**AuthenticationExtensions.cs**:
-
-Configuração da autenticação **JWT**.
-
-Atualizamos o **Program.cs** para ficar mais limpo e modular, delegando responsabilidades aos métodos de extensão.
-
-Seguindo boas práticas de arquitetura com:
-
-Separação clara de responsabilidades (controllers, repositories, etc.)
-Testes unitários abrangentes
-Uso adequado de mocks para isolar as unidades testadas
-Verificações específicas e precisas nos testes
+- Dividimos o código do Program.cs em métodos de extensão para melhorar a organização e aderir ao princípio de responsabilidade única (SRP):
+  - **ServiceExtensions.cs**:
+    - Configuração de serviços, incluindo `DbContext`, `Identity`, e repositórios.
+  - **AuthenticationExtensions.cs**:
+    - Configuração da autenticação **JWT**.
+- Atualizamos o **Program.cs** para ficar mais limpo e modular, delegando responsabilidades aos métodos de extensão.
+- Seguindo boas práticas de arquitetura com:
+  - Separação clara de responsabilidades (controllers, repositories, etc.)
+  - Testes unitários abrangentes
+  - Uso adequado de mocks para isolar as unidades testadas
+  - Verificações específicas e precisas nos testes
 
 16. Implementação de Logs
 - Adicionado suporte ao logging no console utilizando o pacote Microsoft.Extensions.Logging.Console.
@@ -332,7 +332,42 @@ _logger.LogWarning($"Cliente com ID {id} não encontrado");
 
 
 ### Frontend
-Ainda não foi implementado
+1. Configuração Inicial:
+- Configuração do projeto React com create-react-app.
+- Ajustes iniciais nos scripts do package.json e inclusão do .gitignore para evitar rastreamento de arquivos desnecessários.
+
+2. Configuração de Contextos:
+- Criação do AuthContext para gerenciar autenticação do usuário (login/logout).
+- Criação do DependencyProvider para gerenciar a injeção de dependências do projeto.
+- Configuração do ReactQueryProvider para gerenciar estados assíncronos e otimizar chamadas ao backend.
+
+3. Implementação de Páginas:
+- `LoginPage`:
+  - Página de login desenvolvida com Material-UI e React Hook Form.
+  - Adicionadas validações de formulário (ex.: e-mail obrigatório e formato válido).
+- `RegisterPage`:
+  - Página de cadastro criada com validações para campos de nome, e-mail e senha.
+  - Inclusão de validação para confirmação de senha.
+- `DashboardPage`:
+  - Página protegida, exibindo informações do perfil e lista de pedidos recentes.
+  - Uso de React Query para buscar dados assíncronos do backend.
+
+4. Rotas e Proteção:
+- Configuração do React Router para gerenciar navegação entre páginas.
+- Implementação do componente ProtectedRoute para proteger rotas do Dashboard com autenticação.
+
+5. Integração com Backend:
+- Serviços criados para autenticação (`AuthService`), perfil do usuário (`UserService`) e pedidos (`OrderService`).
+- Testes realizados com chamadas a endpoints como `/api/auth/login`, `/api/auth/register`, `/api/user/profile` e `/api/order/recent`.
+
+6. Melhorias e Ajustes:
+- Correções de erros relacionados à compilação e configuração do contexto.
+- Ajuste de validações e estilização utilizando **Material-UI**.
+- Desativação de cliques no botão direito e botão esquerdo do navegador como funcionalidades de segurança.
+
+7. Testes e Depuração:
+- Teste do DependencyProvider para validar injeção de dependências.
+- Depuração de comportamento da aplicação, corrigindo erros como componentes não renderizados ou lentidão na recarga.
 
 
 

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LojaViva.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03aedb82197f213f2a32d8d18d0fd3bf9ecf9ca5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b4903e27ca56056e0cab69a86c17163483653fd")]
 [assembly: System.Reflection.AssemblyProductAttribute("LojaViva.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LojaViva.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

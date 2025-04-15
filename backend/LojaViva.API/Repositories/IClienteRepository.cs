@@ -6,8 +6,10 @@ namespace LojaViva.API.Repositories
     {
         IEnumerable<Cliente> GetAll();
         Cliente? GetById(int id);
+        Cliente? GetByEmail(string email);
         void Add(Cliente cliente);
         void Update(Cliente cliente);
         void Delete(int id);
+        bool ValidateCredentials(string email, string senha);
     }
 }

@@ -1,5 +1,6 @@
 using LojaViva.API.Data;
 using LojaViva.API.Extensions;
+using LojaViva.API.Repositories;
 using System.Runtime.CompilerServices;
 
 // Tornar o programa acessível ao projeto de testes
@@ -10,6 +11,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Configurar logging no console
 builder.Logging.ClearProviders(); // Limpa provedores padrão de logging
 builder.Logging.AddConsole(); // Adiciona logging no console
+
+// Adicionar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Adicionar repositórios
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 
 // Configurar serviços e autenticação
 builder.Services.ConfigureServices(builder.Configuration)
@@ -22,7 +37,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Loja Viva API",
         Version = "v1",
-        Description = "Documentação da API Loja Viva com suporte a autenticação JWT e ASP.NET Core Identity"
+        Description = "Documentação da API Loja Viva com suporte a autenticação JWT"
     });
 });
 
@@ -46,6 +61,7 @@ if (app.Environment.IsDevelopment())
 
 // Configuração de Middleware
 app.UseHttpsRedirection();
+app.UseCors(); // Adiciona o middleware CORS
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
