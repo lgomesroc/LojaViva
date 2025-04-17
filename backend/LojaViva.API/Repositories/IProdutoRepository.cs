@@ -1,4 +1,4 @@
-using LojaViva.API.Models; // Adicione esta linha
+using LojaViva.API.Models;
 
 namespace LojaViva.API.Repositories
 {

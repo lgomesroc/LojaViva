@@ -1,16 +1,19 @@
 using LojaViva.API.Data;
 using LojaViva.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LojaViva.API.Repositories
 {
     public class ClienteRepository : IClienteRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ClienteRepository> _logger;
 
-        public ClienteRepository(ApplicationDbContext context)
+        public ClienteRepository(ApplicationDbContext context, ILogger<ClienteRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public IEnumerable<Cliente> GetAll() => _context.Clientes.ToList();
@@ -24,23 +27,47 @@ namespace LojaViva.API.Repositories
 
         public void Add(Cliente cliente)
         {
-            _context.Clientes.Add(cliente);
-            _context.SaveChanges();
+            try
+            {
+                _context.Clientes.Add(cliente);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erro ao adicionar cliente: {ex.Message}");
+                throw; // Re-lança a exceção para ser tratada no controller
+            }
         }
 
         public void Update(Cliente cliente)
         {
-            _context.Clientes.Update(cliente);
-            _context.SaveChanges();
+            try
+            {
+                _context.Clientes.Update(cliente);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erro ao atualizar cliente: {ex.Message}");
+                throw;
+            }
         }
 
         public void Delete(int id)
         {
-            var cliente = GetById(id);
-            if (cliente != null)
+            try
             {
-                _context.Clientes.Remove(cliente);
-                _context.SaveChanges();
+                var cliente = GetById(id);
+                if (cliente != null)
+                {
+                    _context.Clientes.Remove(cliente);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erro ao excluir cliente: {ex.Message}");
+                throw;
             }
         }
 

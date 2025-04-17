@@ -63,14 +63,14 @@ namespace LojaViva.API.Controllers
                 _logger.LogWarning($"Pedido com ID {id} não encontrado");
                 return NotFound(new { Message = "Pedido não encontrado." });
             }
-            _logger.LogInformation($"Pedido com ID {id} encontrado: Total - {pedido.Total}");
+            _logger.LogInformation($"Pedido com ID {id} encontrado: Valor Total - {pedido.ValorTotal}");
             return Ok(pedido);
         }
 
         [HttpPost]
         public IActionResult AddPedido([FromBody] Pedido pedido)
         {
-            _logger.LogInformation($"POST /api/pedidos chamado para adicionar pedido com Total: {pedido.Total}");
+            _logger.LogInformation($"POST /api/pedidos chamado para adicionar pedido com Valor Total: {pedido.ValorTotal}");
             _pedidoRepository.Add(pedido);
 
             // Invalida o cache para forçar a atualização

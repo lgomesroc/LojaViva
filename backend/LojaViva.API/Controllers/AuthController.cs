@@ -67,12 +67,31 @@ namespace LojaViva.API.Controllers
         [HttpPost("registro")]
         public IActionResult Registro([FromBody] Cliente cliente)
         {
-            _logger.LogInformation("POST /api/auth/registro chamado");
+            _logger.LogInformation("POST /api/auth/registro chamado com dados: {@Cliente}", new { cliente.Nome, cliente.Email });
 
-            if (cliente == null || string.IsNullOrEmpty(cliente.Email) || string.IsNullOrEmpty(cliente.Senha))
+            if (cliente == null)
             {
-                _logger.LogWarning("Dados do cliente inválidos.");
+                _logger.LogWarning("Dados do cliente nulos.");
                 return BadRequest("Dados do cliente inválidos.");
+            }
+
+            // Validações específicas
+            if (string.IsNullOrEmpty(cliente.Nome))
+            {
+                _logger.LogWarning("Nome não fornecido.");
+                return BadRequest("Nome é obrigatório.");
+            }
+
+            if (string.IsNullOrEmpty(cliente.Email))
+            {
+                _logger.LogWarning("Email não fornecido.");
+                return BadRequest("Email é obrigatório.");
+            }
+
+            if (string.IsNullOrEmpty(cliente.Senha))
+            {
+                _logger.LogWarning("Senha não fornecida.");
+                return BadRequest("Senha é obrigatória.");
             }
 
             // Verifica se o cliente já existe
@@ -87,14 +106,17 @@ namespace LojaViva.API.Controllers
             {
                 // Adiciona o novo cliente
                 _clienteRepository.Add(cliente);
-
                 _logger.LogInformation($"Cliente {cliente.Email} registrado com sucesso.");
                 return Ok("Cliente registrado com sucesso.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erro ao registrar cliente {cliente.Email}");
-                return StatusCode(500, "Erro ao registrar cliente.");
+                _logger.LogError(ex, $"Erro ao registrar cliente {cliente.Email}: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, "Erro ao registrar cliente: " + ex.Message);
             }
         }
 
@@ -117,7 +139,7 @@ namespace LojaViva.API.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, cliente.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, cliente.Email),
-                new Claim(ClaimTypes.Name, cliente.Nome ?? string.Empty),
+                new Claim(ClaimTypes.Name, cliente.Nome),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -135,7 +157,7 @@ namespace LojaViva.API.Controllers
 
     public class LoginModel
     {
-        public required string Email { get; set; }
-        public required string Senha { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string Senha { get; set; } = string.Empty;
     }
 }

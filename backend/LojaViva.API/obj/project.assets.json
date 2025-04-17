@@ -3734,19 +3734,19 @@
     ]
   },
   "packageFolders": {
-    "/home/lgomesroc/.nuget/packages/": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/d/Projects/LojaViva/backend/LojaViva.API/LojaViva.API.csproj",
+      "projectUniqueName": "/mnt/d/Ubuntu/Projects/LojaViva/backend/LojaViva.API/LojaViva.API.csproj",
       "projectName": "LojaViva.API",
-      "projectPath": "/mnt/d/Projects/LojaViva/backend/LojaViva.API/LojaViva.API.csproj",
-      "packagesPath": "/home/lgomesroc/.nuget/packages/",
-      "outputPath": "/mnt/d/Projects/LojaViva/backend/LojaViva.API/obj/",
+      "projectPath": "/mnt/d/Ubuntu/Projects/LojaViva/backend/LojaViva.API/LojaViva.API.csproj",
+      "packagesPath": "/root/.nuget/packages/",
+      "outputPath": "/mnt/d/Ubuntu/Projects/LojaViva/backend/LojaViva.API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/lgomesroc/.nuget/NuGet/NuGet.Config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

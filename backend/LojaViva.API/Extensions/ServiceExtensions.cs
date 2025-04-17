@@ -13,15 +13,25 @@ namespace LojaViva.API.Extensions
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Configuração do banco de dados
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    new MySqlServerVersion(new Version(8, 0, 31)),
-                    mySqlOptions => mySqlOptions.EnableRetryOnFailure()
+                    connectionString,
+                    ServerVersion.AutoDetect(connectionString),
+                    mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null
+                    )
                 ));
 
             // Configuração de Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                // Configurações opcionais para Identity
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredLength = 6;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -29,7 +39,6 @@ namespace LojaViva.API.Extensions
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
-
 
             return services;
         }

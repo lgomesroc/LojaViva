@@ -1,47 +1,45 @@
 using LojaViva.API.Data;
 using LojaViva.API.Extensions;
-using LojaViva.API.Repositories;
-using System.Runtime.CompilerServices;
-
-// Tornar o programa acessível ao projeto de testes
-[assembly: InternalsVisibleTo("LojaViva.Tests")]
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar logging no console
-builder.Logging.ClearProviders(); // Limpa provedores padrão de logging
-builder.Logging.AddConsole(); // Adiciona logging no console
+// Configuração detalhada de logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
-// Adicionar CORS
-builder.Services.AddCors(options =>
+var appLogger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>(); // Definir logger corretamente
+
+// Obter a string de conexão do appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Configuração do MySQL com política de retentativas e timeout
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString),
+        mySqlOptions => 
+        {
+            mySqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 10,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+            mySqlOptions.CommandTimeout(60); // Timeout de 60 segundos
+        });
+    
+    // Log detalhado das queries (útil para debug)
+    options.LogTo(Console.WriteLine, LogLevel.Information);
+    options.EnableSensitiveDataLogging();
 });
 
-// Adicionar repositórios
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-
-// Configurar serviços e autenticação
+// Configurar serviços personalizados e autenticação
 builder.Services.ConfigureServices(builder.Configuration)
-                .ConfigureJwtAuthentication(builder.Configuration);
+               .ConfigureAuthentication(builder.Configuration);
 
-// Configuração de Swagger
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Loja Viva API",
-        Version = "v1",
-        Description = "Documentação da API Loja Viva com suporte a autenticação JWT"
-    });
-});
-
-// Adicionar suporte a controladores e Newtonsoft.Json para serialização
+// Configurar controladores com Newtonsoft.Json
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -49,24 +47,64 @@ builder.Services.AddControllers()
         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
     });
 
+// Configurar Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-// Ambiente de desenvolvimento: configurar Swagger e página de erros
+// Migração do banco de dados com tratamento robusto de erros
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var retries = 10; // Número máximo de tentativas
+    
+    appLogger.LogInformation("Iniciando migração do banco de dados...");
+
+    while (retries > 0)
+    {
+        try
+        {
+            var context = services.GetRequiredService<ApplicationDbContext>();
+            context.Database.Migrate();
+            appLogger.LogInformation("Migração do banco de dados concluída com sucesso!");
+            break;
+        }
+        catch (MySqlConnector.MySqlException ex) when (ex.Number == 1042) // Erro de conexão
+        {
+            retries--;
+            appLogger.LogWarning($"Falha na conexão com o MySQL. Tentativas restantes: {retries}. Erro: {ex.Message}");
+            
+            if (retries == 0)
+            {
+                appLogger.LogError("Número máximo de tentativas atingido. A aplicação será encerrada.");
+                throw;
+            }
+
+            Thread.Sleep(5000); // Espera 5 segundos antes de tentar novamente
+        }
+        catch (Exception ex)
+        {
+            appLogger.LogError(ex, "Erro inesperado durante a migração do banco de dados");
+            throw;
+        }
+    }
+}
+
+// Configurar pipeline HTTP
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Configuração de Middleware
 app.UseHttpsRedirection();
-app.UseCors(); // Adiciona o middleware CORS
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+appLogger.LogInformation("Aplicação iniciada com sucesso!");
 app.Run();
 
-// Adicionar uma declaração pública da classe Program para torná-la acessível no teste
-public partial class Program { }
+public partial class Program { } // Para testes de integração
